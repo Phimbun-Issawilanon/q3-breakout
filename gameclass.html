@@ -107,7 +107,8 @@
                 this.posY;
                 this.x;
                 this.y;
-                this.num = 1;
+                this.cRandom = Math.floor(Math.random() * 3);
+                this.rRandom = Math.floor(Math.random() * 3);
                 // สร้าง bricks ตามเเนว column เเละ row
                 this.bricks = []
                 this.specialBrick = [];
@@ -115,7 +116,7 @@
                 for (var c = 0; c < this.column; c++) {
                     this.bricks[c] = [];
                     for (var r = 0; r < this.row; r++) {
-                        if (c == 0 & r == 0) { this.bricks[0][0] = { x: 0, y: 0, status: 2 }; }
+                        if (c == this.cRandom & r == this.rRandom ) { this.bricks[c][r] = { x: 0, y: 0, status: 2 }; }
                         else { this.bricks[c][r] = { x: 0, y: 0, status: 1 }; }
                     }
                 }
