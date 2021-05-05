@@ -451,6 +451,10 @@
                     this.pacMan.posY = this.pacMan.lastposY
                 }
             }
+            if(this.ghost.hitPacman(this.pacMan.posX,this.pacMan.posY))
+            {
+                this.lives--;
+            }
         }
 
         winCheck()
