@@ -107,16 +107,16 @@
                 this.posY;
                 this.x;
                 this.y;
-                this.cRandom = Math.floor(Math.random() * 3);
+                this.cRandom = Math.floor(Math.random() * 5);
                 this.rRandom = Math.floor(Math.random() * 3);
                 // สร้าง bricks ตามเเนว column เเละ row
                 this.bricks = []
-                this.specialBrick = [];
-
                 for (var c = 0; c < this.column; c++) {
                     this.bricks[c] = [];
                     for (var r = 0; r < this.row; r++) {
-                        if (c == this.cRandom & r == this.rRandom ) { this.bricks[c][r] = { x: 0, y: 0, status: 2 }; }
+                        if (c == Math.floor(Math.random() * 5) & r == Math.floor(Math.random() * 3) ) { this.bricks[c][r] = { x: 0, y: 0, status: 2 }; }
+                        else if (c == Math.floor(Math.random() * 5) & r == Math.floor(Math.random() * 3) ) { this.bricks[c][r] = { x: 0, y: 0, status: 3 }; }
+                        
                         else { this.bricks[c][r] = { x: 0, y: 0, status: 1 }; }
                     }
                 }
@@ -150,6 +150,19 @@
                             this.ctx.fill();
                             this.ctx.closePath();
                         }
+                        if (this.bricks[c][r].status == 3)  // if bricks remain
+                        {
+                            this.posX = (c * (this.width + this.padding)) + this.offsetLeft;
+                            this.posY = (r * (this.height + this.padding)) + this.offsetTop;
+                            this.bricks[c][r].x = this.posX;
+                            this.bricks[c][r].y = this.posY;
+                            this.ctx.beginPath();
+                            this.ctx.rect(this.posX, this.posY, this.width, this.height);
+                            this.ctx.fillStyle = "green";
+                            this.ctx.fill();
+                            this.ctx.closePath();
+                        }
+                     
                     }
                 }
             }
@@ -172,10 +185,20 @@
                             if (posX > this.bricks[c][r].x && posX < this.bricks[c][r].x + this.width
                                 && posY > this.bricks[c][r].y && posY < this.bricks[c][r].y + this.height) {
                                 this.bricks[c][r].status = 0;
-                                game.num += 2;
+                                game.num = 3;
                                 return true;
                             }
                         }
+                        if (this.bricks[c][r].status == 3) {
+                            // when ball hit that brick
+                            if (posX > this.bricks[c][r].x && posX < this.bricks[c][r].x + this.width
+                                && posY > this.bricks[c][r].y && posY < this.bricks[c][r].y + this.height) {
+                                this.bricks[c][r].status = 0;
+                                game.paddle.width= 120;
+                                return true;
+                            }
+                        }
+                       
                     }
                 }
                 return false;
