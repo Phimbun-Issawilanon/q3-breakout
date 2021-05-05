@@ -171,7 +171,7 @@
                             if (posX > this.bricks[c][r].x && posX < this.bricks[c][r].x + this.width
                                 && posY > this.bricks[c][r].y && posY < this.bricks[c][r].y + this.height) {
                                 this.bricks[c][r].status = 0;
-
+                                game.num += 2;
                                 return true;
                             }
                         }
@@ -215,8 +215,8 @@
                 this.canvas = document.getElementById("myCanvas");
                 this.ctx = this.canvas.getContext("2d");
                 this.ball = [];
-                this.num = 2;
-                for (var i = 0; i < 2; i++) {
+                this.num = 1;
+                for (var i = 0; i < 3; i++) {
                     this.ball[i] = new Ball(this.canvas.width / 2, this.canvas.height - 30, 10)
                 }
                 this.paddle = new Paddle((this.canvas.width - 75) / 2, 10, 75)
@@ -229,12 +229,12 @@
 
             draw() {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                for (var i = 0; i < 2; i++) {
+                for (var i = 0; i <this.num; i++) {
                     this.ball[i].draw();
                 }
                 this.paddle.draw();
                 this.brick.draw();
-                for (var i = 0; i < 2; i++) {
+                for (var i = 0; i < this.num; i++) {
                     this.ball[i].move();
                 }
 
@@ -253,12 +253,12 @@
             }
 
             collisionDetection() {
-                for (var i = 0; i < 2; i++) {
+                for (var i = 0; i <this.num; i++) {
                     //ตรวจสอบการชนของลูกบอล
-                    if (this.ball.posY + this.ball.dy > this.canvas.height - this.ball.width) {
+                    if (this.ball[i].posY + this.ball[i].dy > this.canvas.height - this.ball[i].width) {
                         // the ball bounce when hit the paddle 
-                        if (this.paddle.hitPaddle(this.ball.posX)) {
-                            this.ball.dy = -this.ball.dy;
+                        if (this.paddle.hitPaddle(this.ball[i].posX)) {
+                            this.ball[i].dy = -this.ball[i].dy;
                         }
                         else {
                             this.lives -= 1;
@@ -270,31 +270,31 @@
                             }
                             else {
                                 // set position of the ball and the paddle at the start position
-                                this.ball.posX = this.canvas.width / 2;
-                                this.ball.posY = this.canvas.height - 30;
-                                this.ball.dy = -3;
-                                this.ball.dx = 3;
+                                this.ball[i].posX = this.canvas.width / 2;
+                                this.ball[i].posY = this.canvas.height - 30;
+                                this.ball[i].dy = -3;
+                                this.ball[i].dx = 3;
                                 this.paddle.posX = (this.canvas.width - this.paddle.width) / 2;
                             }
                         }
                     }
 
                     // when the ball hit the brick
-                    if (this.brick.hitBrick(this.ball.posX, this.ball.posY)) {
-                        this.ball.dy = -this.ball.dy;
+                    if (this.brick.hitBrick(this.ball[i].posX, this.ball[i].posY)) {
+                        this.ball[i].dy = -this.ball[i].dy;
                         this.score += 1;
                         this.draw
                         this.winCheck();
                     }
 
                     // when the ball hit the left or right border of canvas
-                    if (this.ball.posX + this.ball.dx > this.canvas.width - this.ball.width || this.ball.posX + this.ball.dx < this.ball.width) {
-                        this.ball.dx = -this.ball.dx;
+                    if (this.ball[i].posX + this.ball[i].dx > this.canvas.width - this.ball[i].width || this.ball[i].posX + this.ball[i].dx < this.ball[i].width) {
+                        this.ball[i].dx = -this.ball[i].dx;
                     }
 
                     // when the ball hit the top border of canvas
-                    if (this.ball.posY + this.ball.dy < this.ball.width) {
-                        this.ball.dy = -this.ball.dy;
+                    if (this.ball[i].posY + this.ball[i].dy < this.ball[i].width) {
+                        this.ball[i].dy = -this.ball[i].dy;
                     }
                 }
             }
